@@ -1,0 +1,13 @@
+.idea
+__pycache__
+htmlcov
+venv
+.coverage
+tf/.env
+tf/.terraform
+*.zip
+*.tfstate
+*.tfstate.backup
+.terraform.tfstate.lock.info
+*.lock.hcl
+praw.ini
