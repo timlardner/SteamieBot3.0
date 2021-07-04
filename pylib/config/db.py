@@ -1,0 +1,7 @@
+TABLE_NAME = "steamiebot"
+GOOGLE_KEY = "google_secrets"
+DARKSKY_KEY = "darksky_api_key"
+PRAW_KEY = "praw_secrets"
+DATA_KEY = "data"
+LISTCOUK_KEY = "listcouk_key"
+ENV_KEY = "env"

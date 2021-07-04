@@ -1,0 +1,9 @@
+.idea
+tf/.env
+tf/.terraform
+*.zip
+*.tfstate
+*.tfstate.backup
+*.lock.hcl
+praw.ini
+__pycache__

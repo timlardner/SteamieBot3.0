@@ -1,0 +1,10 @@
+#!/bin/bash
+
+function fullpath {
+  echo "$(cd "$(dirname "$1")"; pwd)/$(basename "$1")"
+}
+
+export PKG_DIR=".env/python"
+export REQ_DIR=$( fullpath ../pylib )
+rm -rf ${PKG_DIR} && mkdir -p ${PKG_DIR}
+docker run --rm -v $(pwd):/foo -v $REQ_DIR:/tmp/req -w /foo lambci/lambda:build-python3.7 pip3 install --no-deps -r /tmp/req/requirements.txt -t ${PKG_DIR}
