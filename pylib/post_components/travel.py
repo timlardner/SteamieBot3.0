@@ -32,7 +32,7 @@ class TravelInfo(PostInterface):
         for station in self.stations_to_check:
             check_url = f"http://www.journeycheck.com/scotrail/route?from=&to={station}&action=search&savedRoute="
             resp = requests.get(check_url)
-            update_text = BeautifulSoup(resp.text, parse_only=parse_only).get_text()
+            update_text = BeautifulSoup(resp.text, 'html.parser', parse_only=parse_only).get_text()
             relevant_lines = filter(
                 lambda x: x and all(ignore_line.casefold() not in x.casefold() for ignore_line in self.ignore_lines),
                 update_text.split("\n"),

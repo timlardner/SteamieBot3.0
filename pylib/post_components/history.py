@@ -22,7 +22,7 @@ class History(PostInterface):
         base = f"https://www.undiscoveredscotland.co.uk/usfeatures/onthisday/{date_string_for_url}.html"
         r = requests.get(base)
         p_only = SoupStrainer("p")
-        soup = BeautifulSoup(r.text, parse_only=p_only)
+        soup = BeautifulSoup(r.text, 'html.parser', parse_only=p_only)
         formatted_lines = [self._format_line(line.text) for line in soup]
         today_lines = [line for line in formatted_lines if line.startswith(date_string_for_page)]
         chosen_line = random.choice(today_lines)
