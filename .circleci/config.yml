@@ -3,11 +3,45 @@ version: 2.1
 orbs:
   python: circleci/python@1.2
   codecov: codecov/codecov@1.0.2
+  terraform: circleci/terraform@2.1.0
 
 workflows:
-  steamiebot:
+  test:
     jobs:
       - test-steamie
+  deploy_infrastructure:
+    jobs:
+      - terraform/validate:
+          checkout: true
+          context: terraform
+          path: tf
+      - terraform/plan:
+          checkout: true
+          context: terraform
+          path: tf
+          persist-workspace: true
+          requires:
+            - terraform/validate
+      - hold-apply:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
+                - feature/cd-tf
+          requires:
+            - terraform/plan
+      - terraform/apply:
+          attach-workspace: true
+          context: terraform
+          path: tf
+          filters:
+            branches:
+              only:
+                - master
+                - feature/cd-tf
+          requires:
+            - hold-apply
 
 jobs:
   test-steamie:

@@ -1,6 +1,6 @@
 data "archive_file" "application" {
   type        = "zip"
-  source_dir  = "../pylib/"
+  source_dir  = "pylib/"
   output_path = "payload-lambda.zip"
 }
 
