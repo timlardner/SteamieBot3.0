@@ -1,3 +1,4 @@
+import logging
 import pickle
 import sys
 
@@ -15,6 +16,8 @@ from utils.common import local_time
 from utils.db import get_key
 
 MODULE_LIST = [Weather, TravelInfo, EventInfo, History, MarketInfo, TuneInfo, Footer]
+
+log = logging.getLogger(__name__)
 
 
 class PostBuilder:
@@ -53,7 +56,10 @@ class PostBuilder:
 
         # We could do the below more concisely, but this ensures dictionary order if posts is pre-populated
         for module in modules:
-            posts[module.__name__] = module().get_info()
+            try:
+                posts[module.__name__] = module().get_info()
+            except Exception:
+                log.exception(f'Could not get post data for module: {module.__name__}')
 
         self._write_body(posts)
         return posts

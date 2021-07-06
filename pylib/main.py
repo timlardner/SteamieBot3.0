@@ -58,4 +58,4 @@ def lambda_handler(event, _):
 
 
 if __name__ == "__main__":
-    lambda_handler({"env": "dev"}, None)
+    lambda_handler({"env": "prod"}, None)

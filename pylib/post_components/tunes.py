@@ -53,23 +53,26 @@ class TuneInfo(PostInterface):
         if message.was_comment:  # We don't want to include comment replies, just PMs
             return False
 
+        log.info(f"Received message from {message.author.name} ({message.subject}):")
+        log.info(message.body)
+
         time_difference = dt.datetime.utcnow() - dt.datetime.fromtimestamp(int(message.created_utc))
         if time_difference > dt.timedelta(days=1):  # We only want to look at messages from the last day
             return False
 
         if message.author in dict(self.author_link):
-            log.debug(f"{message.author} has already submitted an eligible link today")
+            log.info(f"{message.author} has already submitted an eligible link today")
             return False
 
         if any(Reddit().subreddit(self.subreddit).banned(redditor=message.author)):
-            log.debug(f"{message.author} is banned and ineligible to submit songs")
+            log.info(f"{message.author} is banned and ineligible to submit songs")
             return False
 
         sending_user = Reddit().redditor(message.author.name)
         time_difference = dt.datetime.utcnow() - dt.datetime.fromtimestamp(int(sending_user.created_utc))
 
         if time_difference < dt.timedelta(days=self.usage_age_floor):
-            log.debug(f"{message.author.name} must be {self.usage_age_floor} days old to submit songs")
+            log.info(f"{message.author.name} must be {self.usage_age_floor} days old to submit songs")
             return False
 
         return True
@@ -81,7 +84,6 @@ class TuneInfo(PostInterface):
                 if not self.dry_run:
                     message.mark_read()
 
-                log.debug(f"Received message from {message.author.name}")
                 if not self.validate_message(message):
                     continue
 

@@ -1,5 +1,6 @@
 import configparser
 import datetime as dt
+import logging
 import os
 
 import boto3
@@ -9,13 +10,17 @@ from config import db, state
 from utils.common import Singleton
 from utils.db import get_key
 
+log = logging.getLogger(__name__)
+
 
 class Reddit(praw.Reddit, metaclass=Singleton):
     def __init__(self, *args, **kwargs):
+        log.info(f"Initialising Reddit wrapper for {state.get_stateful('env')}")
         self._patch_praw()
         super().__init__(*args, **kwargs)
         self.validate_on_submit = True
         assert self.user.me()
+        log.info(f'Authenticated to Reddit as {self.user.me().name}')
 
     @staticmethod
     def _patch_praw():
