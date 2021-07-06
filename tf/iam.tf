@@ -2,17 +2,17 @@ resource "aws_iam_role" "steamie_iam" {
   name = "steamie_iam"
 
   assume_role_policy = jsonencode({
-  Version = "2012-10-17"
-  Statement = [
-    {
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Sid    = ""
-      Principal = {
-        Service = "lambda.amazonaws.com"
-      }
-    },
-  ]
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      },
+    ]
   })
 }
 
@@ -54,15 +54,15 @@ resource "aws_iam_role_policy_attachment" "allow_steamie_dynamo" {
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_dev_to_call_run_steamie" {
-    action = "lambda:InvokeFunction"
-    function_name = aws_lambda_function.run_steamie.function_name
-    principal = "events.amazonaws.com"
-    source_arn = aws_cloudwatch_event_rule.steamie_trigger_dev.arn
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.run_steamie.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.steamie_trigger_dev.arn
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_prod_to_call_run_steamie" {
-    action = "lambda:InvokeFunction"
-    function_name = aws_lambda_function.run_steamie.function_name
-    principal = "events.amazonaws.com"
-    source_arn = aws_cloudwatch_event_rule.steamie_trigger_prod.arn
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.run_steamie.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.steamie_trigger_prod.arn
 }
