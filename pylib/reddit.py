@@ -20,7 +20,7 @@ class Reddit(praw.Reddit, metaclass=Singleton):
         super().__init__(*args, **kwargs)
         self.validate_on_submit = True
         assert self.user.me()
-        log.info(f'Authenticated to Reddit as {self.user.me().name}')
+        log.info(f"Authenticated to Reddit as {self.user.me().name}")
 
     @staticmethod
     def _patch_praw():
@@ -36,7 +36,7 @@ class Reddit(praw.Reddit, metaclass=Singleton):
         with open("/tmp/praw.ini", "w") as f:
             praw_config.write(f)
 
-        os.environ['XDG_CONFIG_HOME'] = '/tmp'
+        os.environ["XDG_CONFIG_HOME"] = "/tmp"
 
 
 def get_latest_submission(subreddit=None):

@@ -21,7 +21,7 @@ def main(is_update=False, env="dev"):
     if is_update:
         if not dry_run:
             active_post.edit(post)
-            log.info(f'Updated {active_post.title}')
+            log.info(f"Updated {active_post.title}")
         else:
             log.info(f"Would update live post {active_post.title} with:\n{post}")
     elif not dry_run:
@@ -35,10 +35,10 @@ def main(is_update=False, env="dev"):
                 send_replies=False,
             )
         )
-        log.info(f'Created new post: {submission.title}')
+        log.info(f"Created new post: {submission.title}")
         if get_stateful("set_sticky"):
             submission.mod.sticky()
-            log.info('Stickied')
+            log.info("Stickied")
     else:
         log.info(f"Would create new post: {title}\n{post}")
 
@@ -46,8 +46,8 @@ def main(is_update=False, env="dev"):
 def lambda_handler(event, _):
     init_logging(level=logging.INFO)
 
-    start_hour = event.get('start_time', 6)
-    end_hour = event.get('end_time', 22)
+    start_hour = event.get("start_time", 6)
+    end_hour = event.get("end_time", 22)
 
     if not start_hour <= local_time().hour <= end_hour:  # Run from 6am to 10pm by default
         log.info("It's not time to make a post")

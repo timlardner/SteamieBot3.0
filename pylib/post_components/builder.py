@@ -59,7 +59,7 @@ class PostBuilder:
             try:
                 posts[module.__name__] = module().get_info()
             except Exception:
-                log.exception(f'Could not get post data for module: {module.__name__}')
+                log.exception(f"Could not get post data for module: {module.__name__}")
 
         self._write_body(posts)
         return posts

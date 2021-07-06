@@ -1,4 +1,5 @@
 import datetime as dt
+from functools import lru_cache
 import logging
 import random
 import re
@@ -29,11 +30,15 @@ class YouTubeInfo(metaclass=Singleton):
         yt = build("youtube", "v3", developerKey=api_key, cache_discovery=False)
         return yt
 
+    @lru_cache
     def get_title(self, this_id):
         response = self.yt.videos().list(part="id,snippet,statistics,contentDetails,status", id=this_id).execute()
         if not response["items"]:
+            log.info(f"Could not map {this_id} to a title.")
             return None
-        return response["items"][0]["snippet"]["title"]
+        title = response["items"][0]["snippet"]["title"]
+        log.info(f"YouTube ID {this_id} maps to title: {title}")
+        return title
 
 
 class TuneInfo(PostInterface):
@@ -58,6 +63,7 @@ class TuneInfo(PostInterface):
 
         time_difference = dt.datetime.utcnow() - dt.datetime.fromtimestamp(int(message.created_utc))
         if time_difference > dt.timedelta(days=1):  # We only want to look at messages from the last day
+            log.info("Message was sent more than one day ago")
             return False
 
         if message.author in dict(self.author_link):
