@@ -9,7 +9,8 @@ class TravelInfo(PostInterface):
         self.stations_to_check = ["GLC", "GLQ"]
         self.ignore_lines = [
             "no line updates reported",
-            "');" "delay-repay",
+            "');",
+            "delay-repay",
             "Additional Information",
             "Impact",
             "Customer Advice:",
@@ -30,7 +31,7 @@ class TravelInfo(PostInterface):
         parse_only = SoupStrainer(attrs={"id": "lu_update_body"})
         train_info = []
         for station in self.stations_to_check:
-            check_url = f"http://www.journeycheck.com/scotrail/route?from=&to={station}&action=search&savedRoute="
+            check_url = f"https://www.journeycheck.com/scotrail/route?from=&to={station}&action=search"
             resp = requests.get(check_url)
             update_text = BeautifulSoup(resp.text, "html.parser", parse_only=parse_only).get_text()
             relevant_lines = filter(
@@ -38,6 +39,7 @@ class TravelInfo(PostInterface):
                 update_text.split("\n"),
             )
             for line in relevant_lines:
+                line = line.strip()
                 if line not in train_info:
                     train_info.append(line)
 

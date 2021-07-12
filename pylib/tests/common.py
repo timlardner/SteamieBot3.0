@@ -5,8 +5,12 @@ import boto3
 import yaml
 
 from config import db
-from utils.db import (populate_dynamodb_darksky, populate_dynamodb_google,
-                      populate_dynamodb_listcouk, populate_dynamodb_praw)
+from utils.db import (
+    populate_dynamodb_darksky,
+    populate_dynamodb_google,
+    populate_dynamodb_listcouk,
+    populate_dynamodb_praw,
+)
 
 
 def get_test_data():
